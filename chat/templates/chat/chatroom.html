@@ -1,8 +1,15 @@
 {% load static %}
 
+{% block content %}
+
 <h1>
     {{ room_name }}
 </h1>
+
+<div id="chat-log">
+
+</div>
+
 
 <form id="message-form">
     <input id="message" type="text">
@@ -10,3 +17,5 @@
 </form>
 
 <script src="{% static 'js/chat.js' %}"></script>
+
+{% endblock content %}
