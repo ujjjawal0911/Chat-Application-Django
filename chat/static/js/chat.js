@@ -1,9 +1,12 @@
-const url = 'ws://' + window.location.host + '/ws/chat/';
+
+// Getting Chat Log and room name
+const chatLog = document.getElementById('chat-log');
+const room_name = document.getElementById('room-name').textContent;
+
+// URL and Socket Variables
+const url = `ws://${window.location.host}/ws/chat/${room_name}/`;
 const chatSocket = new WebSocket(url);
 const chatSend = document.getElementById('message-form');
-
-// Getting Chat Log
-const chatLog = document.getElementById('chat-log');
 
 
 // When Socket Open
@@ -26,8 +29,9 @@ chatSend.onsubmit = (event) => {
 
     // Extracting the message and sending back to server
     let message = messageInput.value;
-    chatLog.innerHTML += `<div>${message}</div>`;
-    chatSocket.send(message);
+    chatSocket.send(JSON.stringify({
+        'message': message
+    }));
 
     // Resetting and setting back to focus
     chatSend.reset();

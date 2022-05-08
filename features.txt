@@ -1,0 +1,5 @@
+- Store messages
+- Store room names
+- Create Account
+- Styling
+- Verification
