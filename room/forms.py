@@ -8,6 +8,11 @@ class RoomForm(ModelForm):
         model = Room
         fields = ['room_name', 'room_desc']
 
+        labels = {
+            'room_name': ('Enter Room Name'),
+            'room_desc': ('Enter Room Description')
+        }
+
         widgets = {
             'room_name': forms.TextInput(
                 attrs={
