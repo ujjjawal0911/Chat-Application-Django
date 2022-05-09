@@ -11,3 +11,7 @@ class Room(models.Model):
         User,
         on_delete=models.CASCADE
     )
+    room_desc = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.room_name
