@@ -1,1 +1,40 @@
-{% extends 'room-base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block links %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/list-rooms.css' %}">
+{% endblock links %}
+
+{% block content %}
+<div class="row d-flex justify-content-center mt-100 mb-100">
+                        
+                                  
+    <div class="col-lg-6">
+       
+       <div class="card">
+           <div class="card-body text-center">
+               <h4 class="card-title m-b-0">Chat Rooms</h4>
+           </div>
+           <ul class="list-style-none">
+               {% for room in rooms %}
+                <li class="d-flex no-block card-body">
+                    <div>
+                        <a href="#" class="m-b-0 font-medium p-0" data-abc="true">{{ room.room_name }}</a>
+                        <span class="text-muted">{{ room.room_desc }} </span>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="tetx-right">
+                            <a href=""><i class="fa-solid fa-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </li>
+               {% endfor %}
+           </ul>
+       </div>
+
+   </div>
+   </div>
+   
+{% endblock content %}
