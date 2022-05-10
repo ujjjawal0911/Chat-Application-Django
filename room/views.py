@@ -1,12 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from .models import Room
 from .forms import RoomForm
 
 
 class CreateRoom(View):
+    def get(self, request, *args, **kwargs):
+        form = RoomForm()
+        return render(request, 'room/create-room.html', {
+            'form': form
+        })
+
     def post(self, request, *args, **kwargs):
-        pass
+        form = RoomForm(request.POST)
+
+        if form.is_valid():
+            room_name = form.cleaned_data['room_name']
+            instance = form.save(commit=False)
+            print(request.user)
+            instance.owner_id = request.user
+            instance.save()
+            return redirect('list-rooms')
+
+        return render(request, 'room/create-room.html', {
+            'form': form,
+        })
 
 # Get Room Info
 
@@ -25,6 +43,7 @@ class DeleteRoom(View):
 
 class ListRoom(View):
     def get(self, request, *args, **kwargs):
+        rooms = Room.objects.all()
         return render(request, 'room/list-rooms.html', {
-            'form': RoomForm()
+            'rooms': rooms
         })

@@ -24,6 +24,8 @@ class RoomForm(ModelForm):
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Room Information',
+                    'rows': '5',
+                    'style': 'height:100%;',
                 }
             )
         }

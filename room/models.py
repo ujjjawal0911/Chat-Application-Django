@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_name = models.CharField(max_length=256, unique=True)
-    owner_id = models.OneToOneField(
+    owner_id = models.ForeignKey(
         User,
         on_delete=models.CASCADE
     )
