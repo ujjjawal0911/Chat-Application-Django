@@ -3,3 +3,6 @@
 - Create Account
 - Styling
 - Verification
+
+
+- Text Wrap for long messages

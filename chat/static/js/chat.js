@@ -14,10 +14,16 @@ chatSocket.onopen = function (event) {
     console.log(event.data);
 }
 
+// Test Variables
+const USERNAME = "Harvey";
+const RECEIVER = "Adam";
+
 // When Socket Closed
 chatSocket.onmessage = function (event) {
     const recievedMessage = JSON.parse(event.data);
-    chatLog.innerHTML += `<div>${recievedMessage.message}</div>`;
+    appendMessage(USERNAME, "left", recievedMessage.message);
+    // appendMessage(PERSON_NAME, PERSON_IMG, "right", recievedMessage);
+    // chatLog.innerHTML += `<div>${recievedMessage.message}</div>`;
 }
 
 chatSend.onsubmit = (event) => {
@@ -36,4 +42,24 @@ chatSend.onsubmit = (event) => {
     // Resetting and setting back to focus
     chatSend.reset();
     chatSend.focus();
+}
+
+// Append Message
+function appendMessage(name, side, text) {
+    const msgHTML = `
+    <div class="msg ${side}-msg">
+
+      <div class="msg-bubble">
+        <div class="msg-info">
+          <div class="msg-info-name">${name}</div>
+          <div class="msg-info-time">${formatDate(new Date())}</div>
+        </div>
+
+        <div class="msg-text">${text}</div>
+      </div>
+    </div>
+  `;
+
+    chatLog.insertAdjacentHTML("beforeend", msgHTML);
+    chatLog.scrollTop += 500;
 }
