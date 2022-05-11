@@ -14,18 +14,31 @@ class ChatRoomConsumer(WebsocketConsumer):
             self.channel_name
         )
 
+        # Accepting the connection
         self.accept()
+
+        # Get Current User and get it's username
+        self.user = self.scope['user']
+        if self.user.is_authenticated:
+            username = str(self.scope['user'])
+        else:
+            username = str(self.scope['session']['username'])
+
+        # Send a message ensuring connection made successfully
+        self.send(text_data=json.dumps({
+            'type': 'connection_made',
+            'username': username,
+        }))
+
+    # Recieve Event
 
     def receive(self, text_data=None):
         # Convert the TextData string to JSON Format
         text_data_json = json.loads(text_data)
 
         # Extract the message from JSON Format
+        username = text_data_json['username']
         message = text_data_json['message']
-
-        # Temp ID to differentiate Anonymous Users
-        temp_id = text_data_json['temp_id']
-        username = str(self.scope['user'])
 
         # Sending the message to the specified group
         async_to_sync(self.channel_layer.group_send)(
@@ -34,19 +47,16 @@ class ChatRoomConsumer(WebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'username': username,
-                'temp_id': temp_id,
             }
         )
 
     def chat_message(self, event):
+        type = event['type']
         message = event['message']
         username = event['username']
 
-        # To differentiate Anonymous Users
-        temp_id = event['temp_id']
-
         self.send(text_data=json.dumps({
+            'type': type,
             'message': message,
             'username': username,
-            'temp_id': temp_id,
         }))

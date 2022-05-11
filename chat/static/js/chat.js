@@ -10,38 +10,38 @@ const url = `ws://${window.location.host}/ws/chat/${room_name}/`;
 const chatSocket = new WebSocket(url);
 const chatSend = document.getElementById('message-form');
 
-// A temproary ID to differentiate Anonymous Users
-const id = Math.floor(100000 + Math.random() * 900000);
-const temp_id = id;
-
-// When Socket Open
-chatSocket.onopen = function (event) {
-  console.log(event.data);
-}
-
 
 // Function to Capitalize UserName
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Variable to Set Username
+let USERNAME;
+
 // When Socket Recieved
 chatSocket.onmessage = function (event) {
 
   // Converting Received Message to JSON Format
   const recievedMessage = JSON.parse(event.data);
-  const USERNAME = (recievedMessage.username);
 
-  // Variable to decide wether to show message bubble in left or right
-  let side;
-  if (USERNAME === username || temp_id === recievedMessage.temp_id) {
-    side = "right";
-  } else {
-    side = "left";
+  // Connection Made - set Username - important for Anonymous Users
+  console.log(recievedMessage);
+  if (recievedMessage.type === 'connection_made') {
+    USERNAME = recievedMessage.username;
   }
 
-  // Callling Append Method
-  appendMessage(capitalizeFirstLetter(USERNAME), side, recievedMessage.message);
+
+  // On recieivng normal messages
+  if (recievedMessage.type === 'chat_message') {
+    let side;
+    if (USERNAME === recievedMessage.username) {
+      side = "right";
+    } else {
+      side = "left";
+    }
+    appendMessage(capitalizeFirstLetter(recievedMessage.username), side, recievedMessage.message);
+  }
 }
 
 chatSend.onsubmit = (event) => {
@@ -55,7 +55,7 @@ chatSend.onsubmit = (event) => {
   let message = messageInput.value;
   chatSocket.send(JSON.stringify({
     'message': message,
-    'temp_id': temp_id,
+    'username': USERNAME,
   }));
 
   // Resetting and setting back to focus
