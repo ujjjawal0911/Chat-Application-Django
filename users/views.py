@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import CustomUserForm
 from django.views import View
+from django.contrib.auth import login
 
 
 class RegisterView(View):
@@ -11,4 +12,13 @@ class RegisterView(View):
         })
 
     def post(self, request, *args, **kwargs):
-        pass
+        form = CustomUserForm(request.POST or None)
+        if form.is_valid():
+            # Model Form Returns the object created
+            user = form.save()
+            login(request, user)
+            return redirect('list-rooms')
+
+        return render(request, 'registration/register.html', {
+            'form': form
+        })
