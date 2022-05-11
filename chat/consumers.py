@@ -22,19 +22,23 @@ class ChatRoomConsumer(WebsocketConsumer):
 
         # Extract the message from JSON Format
         message = text_data_json['message']
+        username = text_data_json['username']
 
         # Sending the message to the specified group
         async_to_sync(self.channel_layer.group_send)(
             self.room_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'username': username,
             }
         )
 
     def chat_message(self, event):
         message = event['message']
+        username = event['username']
 
         self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'username': username,
         }))

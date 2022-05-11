@@ -7,9 +7,7 @@ const BOT_NAME = "BOT";
 const PERSON_NAME = "Sajad";
 
 msgerForm.addEventListener("submit", event => {
-    // event.preventDefault();
 
-    // const msgText = msgerInput.value;
     if (!msgText) return;
 
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
