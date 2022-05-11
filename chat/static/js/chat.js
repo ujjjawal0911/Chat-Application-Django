@@ -10,6 +10,9 @@ const url = `ws://${window.location.host}/ws/chat/${room_name}/`;
 const chatSocket = new WebSocket(url);
 const chatSend = document.getElementById('message-form');
 
+// A temproary ID to differentiate Anonymous Users
+const id = Math.floor(100000 + Math.random() * 900000);
+const temp_id = id;
 
 // When Socket Open
 chatSocket.onopen = function (event) {
@@ -22,7 +25,7 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// When Socket Closed
+// When Socket Recieved
 chatSocket.onmessage = function (event) {
 
   // Converting Received Message to JSON Format
@@ -31,7 +34,7 @@ chatSocket.onmessage = function (event) {
 
   // Variable to decide wether to show message bubble in left or right
   let side;
-  if (USERNAME === username) {
+  if (USERNAME === username || temp_id === recievedMessage.temp_id) {
     side = "right";
   } else {
     side = "left";
@@ -52,7 +55,7 @@ chatSend.onsubmit = (event) => {
   let message = messageInput.value;
   chatSocket.send(JSON.stringify({
     'message': message,
-    'username': username,
+    'temp_id': temp_id,
   }));
 
   // Resetting and setting back to focus

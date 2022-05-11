@@ -22,7 +22,10 @@ class ChatRoomConsumer(WebsocketConsumer):
 
         # Extract the message from JSON Format
         message = text_data_json['message']
-        username = text_data_json['username']
+
+        # Temp ID to differentiate Anonymous Users
+        temp_id = text_data_json['temp_id']
+        username = str(self.scope['user'])
 
         # Sending the message to the specified group
         async_to_sync(self.channel_layer.group_send)(
@@ -31,6 +34,7 @@ class ChatRoomConsumer(WebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'username': username,
+                'temp_id': temp_id,
             }
         )
 
@@ -38,7 +42,11 @@ class ChatRoomConsumer(WebsocketConsumer):
         message = event['message']
         username = event['username']
 
+        # To differentiate Anonymous Users
+        temp_id = event['temp_id']
+
         self.send(text_data=json.dumps({
             'message': message,
             'username': username,
+            'temp_id': temp_id,
         }))
