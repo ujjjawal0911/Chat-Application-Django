@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 import random
 import math
@@ -18,10 +19,11 @@ def generate_code():
 
 def chatroom(request, room_name):
     if not request.user.is_authenticated:
-        request.session['temp_id'] = generate_code()
-        username = 'AnonymousUser-'+request.session['temp_id']
-        request.session['username'] = username
-        request.session.modified = True
+        if 'temp_id' not in request.session:
+            request.session['temp_id'] = generate_code()
+            username = 'AnonymousUser-'+request.session['temp_id']
+            request.session['username'] = username
+            request.session.modified = True
     return render(request, 'chat/chatroom.html', {
         'room_name': room_name,
     })

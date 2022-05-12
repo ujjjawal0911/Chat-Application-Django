@@ -16,6 +16,19 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+
+// Function to Notify User Joined
+function notifyUserJoined(USERNAME, message) {
+  const msgHTML = `
+  <div class="alert alert-warning mx-5 p-2">
+    ${USERNAME} ${message}
+  </div>
+  `;
+
+  chatLog.insertAdjacentHTML("beforeend", msgHTML);
+  chatLog.scrollTop += 500;
+}
+
 // Variable to Set Username
 let USERNAME;
 
@@ -29,6 +42,11 @@ chatSocket.onmessage = function (event) {
   console.log(recievedMessage);
   if (recievedMessage.type === 'connection_made') {
     USERNAME = recievedMessage.username;
+  }
+
+  // Notification Received
+  if (recievedMessage.type === 'notify') {
+    notifyUserJoined(capitalizeFirstLetter(recievedMessage.username), recievedMessage.message);
   }
 
 

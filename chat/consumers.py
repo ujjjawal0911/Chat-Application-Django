@@ -1,4 +1,3 @@
-from email import message
 import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
@@ -24,14 +23,35 @@ class ChatRoomConsumer(WebsocketConsumer):
         else:
             username = str(self.scope['session']['username'])
 
-        # Send a message ensuring connection made successfully
+        # Send a message to set the username variable
         self.send(text_data=json.dumps({
             'type': 'connection_made',
             'username': username,
         }))
 
-    # Recieve Event
+        # Sending Message to all users notifying that a user joined
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_name,
+            {
+                'type': 'notify',
+                'username': username,
+                'message': 'joined the chatroom',
+            }
+        )
 
+    # Notify Message Function
+    def notify(self, event):
+        type = event['type']
+        username = event['username']
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type': type,
+            'username': username,
+            'message': message,
+        }))
+
+    # Recieve Event
     def receive(self, text_data=None):
         # Convert the TextData string to JSON Format
         text_data_json = json.loads(text_data)
