@@ -4,6 +4,15 @@ from asgiref.sync import async_to_sync
 
 
 class ChatRoomConsumer(WebsocketConsumer):
+
+    # A function to get username
+    def get_username(self):
+        self.user = self.scope['user']
+        if self.user.is_authenticated:
+            return str(self.scope['user'])
+        else:
+            return str(self.scope['session']['username'])
+
     def connect(self):
         # Get the room name from the URL
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -16,17 +25,17 @@ class ChatRoomConsumer(WebsocketConsumer):
         # Accepting the connection
         self.accept()
 
-        # Get Current User and get it's username
-        self.user = self.scope['user']
-        if self.user.is_authenticated:
-            username = str(self.scope['user'])
-        else:
-            username = str(self.scope['session']['username'])
+        # # Get Current User and get it's username
+        # self.user = self.scope['user']
+        # if self.user.is_authenticated:
+        #     username = str(self.scope['user'])
+        # else:
+        #     username = str(self.scope['session']['username'])
 
         # Send a message to set the username variable
         self.send(text_data=json.dumps({
             'type': 'connection_made',
-            'username': username,
+            'username': self.get_username(),
         }))
 
         # Sending Message to all users notifying that a user joined
@@ -34,7 +43,7 @@ class ChatRoomConsumer(WebsocketConsumer):
             self.room_name,
             {
                 'type': 'notify',
-                'username': username,
+                'username': self.get_username(),
                 'message': 'joined the chatroom',
             }
         )
@@ -80,3 +89,15 @@ class ChatRoomConsumer(WebsocketConsumer):
             'message': message,
             'username': username,
         }))
+
+    # Disconnect
+
+    def disconnect(self, event):
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_name,
+            {
+                'type': 'notify',
+                'username': self.get_username(),
+                'message': 'left the chatroom',
+            }
+        )
