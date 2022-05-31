@@ -1,3 +1,9 @@
+// Setting the height of the Body
+let navbarHeight = document.getElementById('navbar').offsetHeight;
+let elementHeight = window.innerHeight - navbarHeight;
+document.getElementById('main-body').setAttribute('style', `height: ${elementHeight}px`);
+
+
 // Getting Chat-Log and room name
 const chatLog = document.getElementById('chat-log');
 const room_name = document.getElementById('room-name').textContent;

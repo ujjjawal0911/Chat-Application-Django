@@ -1,17 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
-
-h4 {
-    font-weight: 600;
-}
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"); */
 
 .height {
-
     height: auto;
 }
 
 
 .card {
-
     width: 380px;
     border: none;
 
@@ -20,8 +14,6 @@ h4 {
 .form-control {
 
     border: 2px solid #bdc1d2;
-
-    font-size: 13px;
     height: 48px;
 
 }
@@ -56,7 +48,6 @@ h4 {
     right: 8px;
     bottom: 10px;
     color: #6ca0d6;
-    font-size: 13px;
     text-decoration: none;
     z-index: 10;
     background-color: #fff;
@@ -64,21 +55,7 @@ h4 {
 
 }
 
-
-.fa-paperclip {
-
-    font-size: 19px;
-}
-
-
-.quote {
-
-    font-size: 13px;
-}
-
-
 .send {
 
     height: 46px;
-    font-size: 14px;
 }

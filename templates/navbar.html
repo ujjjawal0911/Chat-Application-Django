@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+<nav class="navbar navbar-expand-lg navbar-dark bg-warning" id="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'list-rooms' %}"><h3><i class="fa-solid fa-comments"></i> MyChat</h3></a>
 
@@ -10,10 +10,10 @@
                   {{user.username|title}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                  <li><a class="dropdown-item" href="">Create New Entry</a></li>
+                  <li><a class="dropdown-item" href="{% url 'create-room' %}">Create New Room</a></li>
                   <li><a class="dropdown-item" href="">Change Password</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="">Logout</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               </ul>
               {% else %}
               <a href="{% url 'login' %}" class="btn btn-warning text-light">Login  <i class="fa-solid fa-right-to-bracket"></i></a>
