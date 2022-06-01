@@ -1,8 +1,12 @@
 - Store messages
-- Store room names
-- Create Account
+
 - Styling
-- Verification
 
-
-- Text Wrap for long messages
+- CRUD for Rooms
+    - Update
+    - Delete Space Entries
+- Change Password
+- Avatar/Profile Images
+- Display Profile Images
+- Private and Public ChatRooms
+- Images Sent Feature

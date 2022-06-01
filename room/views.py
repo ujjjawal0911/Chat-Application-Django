@@ -15,9 +15,8 @@ class CreateRoom(View):
         form = RoomForm(request.POST)
 
         if form.is_valid():
-            room_name = form.cleaned_data['room_name']
+            # Getting the Instance of the User Who Created the Room
             instance = form.save(commit=False)
-            print(request.user)
             instance.owner_id = request.user
             instance.save()
             return redirect('list-rooms')
@@ -26,19 +25,41 @@ class CreateRoom(View):
             'form': form,
         })
 
-# Get Room Info
 
+class UpdateRoom(View):
+    def get(self, request, *args, **kwargs):
+        room = Room.objects.get(room_name=kwargs['room_name'])
+        form = RoomForm(instance=room)
+        return render(request, 'room/create-room.html', {
+            'room': room,
+            'form': form,
+            'update': True
+            # Using same Template for Create and Update so
+            # To Identify wether request for Update or Create
+            # So to change Hrefs and Few Names
+        })
 
-class RoomInfo(View):
-    pass
+    def post(self, request, *args, **kwargs):
+        room = Room.objects.get(room_name=kwargs['room_name'])
+        form = RoomForm(request.POST, instance=room)
 
+        if form.is_valid():
+            form.save()
+            return redirect('list-rooms')
 
-class UpdateRoomInfo(View):
-    pass
+        return render(request, 'room/create-room.html', {
+            'room': room,
+            'form': form,
+            'update': True
+        })
 
 
 class DeleteRoom(View):
-    pass
+    def get(self, request, *args, **kwargs):
+        room_name = kwargs['room_name']
+        room = Room.objects.get(room_name=room_name)
+        room.delete()
+        return redirect('list-rooms')
 
 
 class ListRoom(View):

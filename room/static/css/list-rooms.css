@@ -2,6 +2,11 @@
     margin-top: 100px;
 }
 
+.tetx-right {
+    display: flex;
+    flex-direction: row;
+}
+
 .mb-100 {
     margin-bottom: 100px;
 }
