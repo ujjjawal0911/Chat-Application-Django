@@ -1,11 +1,7 @@
-- Store messages
-
 - Styling
 
-- CRUD for Rooms
-    - Update
-    - Delete Space Entries
 - Change Password
+- Store messages
 - Avatar/Profile Images
 - Display Profile Images
 - Private and Public ChatRooms
