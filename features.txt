@@ -1,6 +1,5 @@
 - Styling
 
-- Change Password
 - Store messages
 - Avatar/Profile Images
 - Display Profile Images

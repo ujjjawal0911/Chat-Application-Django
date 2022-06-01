@@ -1,6 +1,8 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
+from .models import Message
+from room.models import Room
 
 
 class ChatRoomConsumer(WebsocketConsumer):
@@ -25,17 +27,20 @@ class ChatRoomConsumer(WebsocketConsumer):
         # Accepting the connection
         self.accept()
 
-        # # Get Current User and get it's username
-        # self.user = self.scope['user']
-        # if self.user.is_authenticated:
-        #     username = str(self.scope['user'])
-        # else:
-        #     username = str(self.scope['session']['username'])
+        # Getting Previous Messages
+        last_messages = []
+        for msg in Message.last_15_messages(self):
+            last_messages.append({
+                'username': msg.author.username,
+                'message': msg.message,
+                'time': msg.timestamp.timestamp(),
+            })
 
         # Send a message to set the username variable
         self.send(text_data=json.dumps({
             'type': 'connection_made',
             'username': self.get_username(),
+            'last_messages': last_messages,
         }))
 
         # Sending Message to all users notifying that a user joined
@@ -68,6 +73,12 @@ class ChatRoomConsumer(WebsocketConsumer):
         # Extract the message from JSON Format
         username = text_data_json['username']
         message = text_data_json['message']
+
+        # Message Saving
+        if self.user.is_authenticated:
+            msg = Message(author=self.user, room_associated=Room.objects.get(
+                room_name=self.room_name), message=message)
+            msg.save()
 
         # Sending the message to the specified group
         async_to_sync(self.channel_layer.group_send)(

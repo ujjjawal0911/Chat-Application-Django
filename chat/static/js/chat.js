@@ -8,8 +8,11 @@ document.getElementById('main-body').setAttribute('style', `height: ${elementHei
 const chatLog = document.getElementById('chat-log');
 const room_name = document.getElementById('room-name').textContent;
 
-// Getting Username of the Us
-const username = document.getElementById('username').textContent;
+// Getting Username of the User
+let username;
+if (document.getElementById('username') != undefined) {
+  username = document.getElementById('username').textContent;
+}
 
 // URL and Socket Variables
 const url = `ws://${window.location.host}/ws/chat/${room_name}/`;
@@ -48,6 +51,18 @@ chatSocket.onmessage = function (event) {
   console.log(recievedMessage);
   if (recievedMessage.type === 'connection_made') {
     USERNAME = recievedMessage.username;
+
+    // Loading Last Few Messages
+    recievedMessage.last_messages.forEach(msg => {
+      let side;
+      if (USERNAME === msg.username) {
+        side = "right";
+      } else {
+        side = "left";
+      }
+      appendMessage(capitalizeFirstLetter(msg.username), side, msg.message);
+    });
+
   }
 
   // Notification Received
@@ -109,8 +124,11 @@ function appendMessage(name, side, text) {
 
 // Function to Format Date
 function formatDate(date) {
+  const d = date.getDate();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  const mt = months[date.getMonth()];
   const h = "0" + date.getHours();
   const m = "0" + date.getMinutes();
 
-  return `${h.slice(-2)}:${m.slice(-2)}`;
+  return `${d} ${mt} ${h.slice(-2)}:${m.slice(-2)}`;
 }
