@@ -17,7 +17,7 @@ class ChatRoomConsumer(WebsocketConsumer):
 
     def connect(self):
         # Get the room name from the URL
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_name = self.scope['url_route']['kwargs']['room_name'].lower()
 
         async_to_sync(self.channel_layer.group_add)(
             self.room_name,
@@ -29,7 +29,9 @@ class ChatRoomConsumer(WebsocketConsumer):
 
         # Getting Previous Messages
         last_messages = []
-        for msg in Message.last_15_messages(self):
+        print(self.room_name)
+        print('*****************')
+        for msg in Message.last_15_messages(self, self.room_name):
             last_messages.append({
                 'username': msg.author.username,
                 'message': msg.message,

@@ -1,7 +1,4 @@
 - Styling
 
-- Store messages
-- Avatar/Profile Images
-- Display Profile Images
 - Private and Public ChatRooms
 - Images Sent Feature

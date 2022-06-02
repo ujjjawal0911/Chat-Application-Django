@@ -21,7 +21,7 @@
                {% for room in rooms %}
                 <li class="d-flex no-block card-body">
                     <div>
-                        <a href="{% url 'room' room_name=room.room_name  %}" class="m-b-0 font-medium p-0" data-abc="true">{{ room.room_name }}</a>
+                        <a href="{% url 'room' room_name=room.room_name  %}" class="m-b-0 font-medium p-0" data-abc="true">{{ room.room_name|title }}</a>
                         <span class="text-muted">{{ room.room_desc }} </span>
                     </div>
                     <div class="ms-auto">

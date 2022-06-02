@@ -16,5 +16,6 @@ class Message(models.Model):
     def __str__(self):
         return self.author.username
 
-    def last_15_messages(self):
-        return Message.objects.order_by('timestamp').all()[:15]
+    def last_15_messages(self, room_associated):
+        room = Room.objects.get(room_name=room_associated)
+        return Message.objects.all().filter(room_associated=room).order_by('timestamp')[:15]
