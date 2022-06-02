@@ -8,11 +8,13 @@ from .views import (
 
 urlpatterns = [
     # Create Room
-    path('create/', CreateRoom.as_view(), name='create-room'),
+    path('create-room/', CreateRoom.as_view(), name='create-room'),
     # Update Room Data
-    path('update/<str:room_name>/', UpdateRoom.as_view(), name='update-room'),
+    path('update-room/<str:room_name>/',
+         UpdateRoom.as_view(), name='update-room'),
     # Delete Room
-    path('delete/<str:room_name>/', DeleteRoom.as_view(), name='delete-room'),
+    path('delete-room/<str:room_name>/',
+         DeleteRoom.as_view(), name='delete-room'),
     # List Rooms
     path('', ListRoom.as_view(), name='list-rooms'),
 ]

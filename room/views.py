@@ -2,9 +2,10 @@ from django.shortcuts import redirect, render
 from django.views import View
 from .models import Room
 from .forms import RoomForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CreateRoom(View):
+class CreateRoom(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = RoomForm()
         return render(request, 'room/create-room.html', {
@@ -26,7 +27,7 @@ class CreateRoom(View):
         })
 
 
-class UpdateRoom(View):
+class UpdateRoom(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         room = Room.objects.get(room_name=kwargs['room_name'])
         form = RoomForm(instance=room)
@@ -54,7 +55,7 @@ class UpdateRoom(View):
         })
 
 
-class DeleteRoom(View):
+class DeleteRoom(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         room_name = kwargs['room_name']
         room = Room.objects.get(room_name=room_name)
