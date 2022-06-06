@@ -123,8 +123,8 @@ html {
 }
 
 .right-msg .msg-bubble {
-    background: var(--right-msg-bg);
-    color: #fff;
+    background: #9cebff;
+    color: #383838;
     border-bottom-right-radius: 0;
 }
 
